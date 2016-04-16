@@ -13,7 +13,7 @@ public class Passenger {
 		this.begining = start;
 		this.destination = end;
 		this.reachedDestination = false;
-		this.travelTime = 10;
+		this.travelTime = 0;
 	}
 	
 	public void update(float time){
