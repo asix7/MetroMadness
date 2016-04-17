@@ -25,7 +25,7 @@ public class Train {
 	private static final float TRAIN_WIDTH=4;
 	private static final float TRAIN_LENGTH = 6;
 	private static final float TRAIN_SPEED=50f;
-
+	
 	// The line that this is traveling on
 	private Line trainLine;
 
@@ -46,14 +46,19 @@ public class Train {
 	private int numTrips;
 	private boolean disembarked;
 
-	
-	public Train(Line trainLine, Station start, boolean forward){
+	//The Max capacity of passengers for a train
+	private int capacity;
+		
+	public Train(Line trainLine, Station start, boolean forward, int capacity){
 		this.trainLine = trainLine;
 		this.station = start;
 		this.state = State.FROM_DEPOT;
 		this.forward = forward;
 		this.passengers = new ArrayList<Passenger>();
+		this.capacity = capacity;
 	}
+	
+	/* Getters - Setters */
 	
 	public Point2D.Float getPos(){
 		return this.pos;
@@ -80,6 +85,8 @@ public class Train {
 	public Color getBACKWARDCOLOUR(){
 		return this.BACKWARD_COLOUR;
 	}
+	
+	/* Methods */
 	
 	public void update(float delta){
 		// Update all passengers
@@ -189,7 +196,10 @@ public class Train {
 	}
 
 	public void embark(Passenger p) throws Exception {
-		throw new Exception();
+		if(this.getPassengers().size() > capacity){
+			throw new Exception();
+		}
+		this.getPassengers().add(p);
 	}
 
 
@@ -222,9 +232,14 @@ public class Train {
 
 	public void render(ShapeRenderer renderer){
 		if(!this.inStation()){
-			Color col = this.forward ? FORWARD_COLOUR : BACKWARD_COLOUR;
+			/*Color col = this.forward ? FORWARD_COLOUR : BACKWARD_COLOUR;
 			renderer.setColor(col);
-			renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH);
+			renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH);*/
+			
+			Color col = this.forward ? FORWARD_COLOUR : BACKWARD_COLOUR;
+			float percentage = this.getPassengers().size()/(float)capacity;
+			renderer.setColor(col.cpy().lerp(Color.DARK_GRAY, percentage));
+			renderer.circle(this.getPos().x, this.getPos().y, getTRAINWIDTH()*(1+percentage));
 		}
 	}
 	
