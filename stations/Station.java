@@ -12,17 +12,16 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class Station {
 	
-	public static final int PLATFORMS=2;
-	
-	public Point2D.Float position;
-	public static final float RADIUS=6;
-	public static final int NUM_CIRCLE_STATMENTS=100;
-	public static final int MAX_LINES=3;
-	public String name;
-	public ArrayList<Line> lines;
-	public ArrayList<Train> trains;
-	public static final float DEPARTURE_TIME = 2;
-	public PassengerRouter router;
+	private static final int PLATFORMS=2;
+	private Point2D.Float position;
+	private static final float RADIUS=6;
+	private static final int NUM_CIRCLE_STATMENTS=100;
+	private static final int MAX_LINES=3;
+	private String name;
+	private ArrayList<Line> lines;
+	private ArrayList<Train> trains;
+	private static final float DEPARTURE_TIME = 2;
+	private PassengerRouter router;
 
 	public Station(float x, float y, PassengerRouter router, String name){
 		this.name = name;
@@ -30,6 +29,26 @@ public class Station {
 		this.position = new Point2D.Float(x,y);
 		this.lines = new ArrayList<Line>();
 		this.trains = new ArrayList<Train>();
+	}
+	
+	public ArrayList<Train> getTrains(){
+		return this.trains;
+	}
+	
+	public ArrayList<Line> getLines(){
+		return this.lines;
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public int getPLATFORMS(){
+		return this.PLATFORMS;
+	}
+	
+	public Point2D.Float getPosition(){
+		return this.position;
 	}
 	
 	public void registerLine(Line l){
@@ -40,7 +59,7 @@ public class Station {
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){
 			Line l = this.lines.get(i);
-			renderer.setColor(l.lineColour);
+			renderer.setColor(l.getLineColour());
 			renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);
 			radius = radius - 1;
 		}

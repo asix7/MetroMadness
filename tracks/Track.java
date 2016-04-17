@@ -6,40 +6,46 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.unimelb.swen30006.metromadness.trains.Train;
 
-public class Track {
-	public static final float DRAW_RADIUS=10f;
-	public static final int LINE_WIDTH=6;
-	public Point2D.Float startPos;
-	public Point2D.Float endPos;
-	public Color trackColour;
-	public boolean occupied;
+public abstract class Track {
+	
+	private static final float DRAW_RADIUS=10f;
+	private static final int LINE_WIDTH=6;
+	private Point2D.Float startPos;
+	private Point2D.Float endPos;
+	private Color trackColour;
+	
 	
 	public Track(Point2D.Float start, Point2D.Float end, Color trackCol){
 		this.startPos = start;
 		this.endPos = end;
 		this.trackColour = trackCol;
-		this.occupied = false;
 	}
 	
-	public void render(ShapeRenderer renderer){
-		renderer.rectLine(startPos.x, startPos.y, endPos.x, endPos.y, LINE_WIDTH);
+	/* Getters - Setters */
+	public Color getTrackColour(){
+		return this.trackColour;
 	}
 	
-	public boolean canEnter(boolean forward){
-		return !this.occupied;
+	public Point2D.Float getEndPos(){
+		return this.endPos;
 	}
 	
-	public void enter(Train t){
-		this.occupied = true;
+	public Point2D.Float getStartPos(){
+		return this.startPos;
 	}
 	
-	@Override
-	public String toString() {
-		return "Track [startPos=" + startPos + ", endPos=" + endPos + ", trackColour=" + trackColour + ", occupied="
-				+ occupied + "]";
+	public float getDRAWRADIUS(){
+		return this.DRAW_RADIUS;
 	}
-
-	public void leave(Train t){
-		this.occupied = false;
+	
+	public float getLINEWIDTH(){
+		return this.LINE_WIDTH;
 	}
+	
+	/* Abstract methods */
+	public abstract boolean canEnter(boolean forward);
+	public abstract void enter(Train t);
+	public abstract void leave(Train t);
+	public abstract void render(ShapeRenderer renderer);
+	public abstract String toString();
 }

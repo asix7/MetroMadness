@@ -33,19 +33,19 @@ public class PassengerGenerator {
 	public Passenger generatePassenger(){
 		// Pick a random station from the line
 		Line l = this.lines.get((int)Math.random()*(this.lines.size()-1));
-		int current_station = l.stations.indexOf(this.s);
+		int current_station = l.getStations().indexOf(this.s);
 		boolean forward = Math.random()>0.5f;
 		
 		// If we are the end of the line then set our direction forward or backward
 		if(current_station == 0){
 			forward = true;
-		}else if (current_station == l.stations.size()-1){
+		}else if (current_station == l.getStations().size()-1){
 			forward = false;
 		}
 		
 		// Find the station
 		int index = (int) ( forward ? Math.random()*(current_station+1) : Math.random()*(current_station-1));
-		Station s = l.stations.get(index);
+		Station s = l.getStations().get(index);
 		
 		return this.s.generatePassenger(s);
 	}

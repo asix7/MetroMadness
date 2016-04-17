@@ -16,16 +16,16 @@ public class ActiveStation extends Station {
 	public ActiveStation(float x, float y, PassengerRouter router, String name, float maxPax) {
 		super(x, y, router, name);
 		this.waiting = new ArrayList<Passenger>();
-		this.g = new PassengerGenerator(this, this.lines, maxPax);
+		this.g = new PassengerGenerator(this, this.getLines(), maxPax);
 	}
 	
 	@Override
 	public void enter(Train t) throws Exception {
-		if(trains.size() >= PLATFORMS){
+		if(getTrains().size() >= getPLATFORMS()){
 			throw new Exception();
 		} else {
 			// Add the train
-			this.trains.add(t);
+			this.getTrains().add(t);
 			
 			// Add the waiting passengers
 			Iterator<Passenger> pIter = this.waiting.iterator();

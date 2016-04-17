@@ -9,15 +9,15 @@ import com.unimelb.swen30006.metromadness.stations.Station;
 public class Line {
 	
 	// The colour of this line
-	public Color lineColour;
-	public Color trackColour;
+	private Color lineColour;
+	private Color trackColour;
 	
 	// The name of this line
-	public String name;
+	private String name;
 	// The stations on this line
-	public ArrayList<Station> stations;
+	private ArrayList<Station> stations;
 	// The tracks on this line between stations
-	public ArrayList<Track> tracks;
+	private ArrayList<Track> tracks;
 		
 	// Create a line
 	public Line(Color stationColour, Color lineColour, String name){
@@ -31,6 +31,17 @@ public class Line {
 		this.tracks = new ArrayList<Track>();
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
+	public Color getLineColour(){
+		return this.lineColour;
+	}
+	
+	public ArrayList<Station> getStations(){
+		return this.stations;
+	}
 	
 	public void addStation(Station s, Boolean two_way){
 		// We need to build the track if this is adding to existing stations
@@ -41,9 +52,9 @@ public class Line {
 			// Generate a new track
 			Track t;
 			if(two_way){
-				t = new DualTrack(last.position, s.position, this.trackColour);
+				t = new DualTrack(last.getPosition(), s.getPosition(), this.trackColour);
 			} else {
-				t = new Track(last.position, s.position, this.trackColour);
+				t = new SimpleTrack(last.getPosition(), s.getPosition(), this.trackColour);
 			}
 			this.tracks.add(t);
 		}
