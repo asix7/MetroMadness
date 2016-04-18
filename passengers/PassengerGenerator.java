@@ -8,46 +8,40 @@ import com.unimelb.swen30006.metromadness.tracks.Line;
 public class PassengerGenerator {
 	
 	// The station that passengers are getting on
-	public Station s;
-	// The line they are travelling on
-	public ArrayList<Line> lines;
+	//public Station current;
+	// All the stations
+	public ArrayList<Station> stations;
 	
 	// The max volume
 	public float maxVolume;
 	
-	public PassengerGenerator(Station s, ArrayList<Line> lines, float max){
-		this.s = s;
-		this.lines = lines;
-		this.maxVolume = max;
+	public PassengerGenerator(ArrayList<Station> stations){
+		//this.current = current;
+		this.stations = stations;
 	}
 	
-	public Passenger[] generatePassengers(){
-		int count = (int) (Math.random()*maxVolume);
+	public Passenger[] generatePassengers(Station current){
+		//If the station is inactive, maxPax = 0 and no passengers is created
+		int count = (int) (Math.random()*current.maxPax);
 		Passenger[] passengers = new Passenger[count];
 		for(int i=0; i<count; i++){
-			passengers[i] = generatePassenger();
+			passengers[i] = generatePassenger(current);
 		}
 		return passengers;
 	}
 	
-	public Passenger generatePassenger(){
+	public Passenger generatePassenger(Station current){
 		// Pick a random station from the line
-		Line l = this.lines.get((int)Math.random()*(this.lines.size()-1));
-		int current_station = l.getStations().indexOf(this.s);
-		boolean forward = Math.random()>0.5f;
 		
-		// If we are the end of the line then set our direction forward or backward
-		if(current_station == 0){
-			forward = true;
-		}else if (current_station == l.getStations().size()-1){
-			forward = false;
+		Station destination = stations.get((int)(Math.random() * stations.size()));
+		
+		//Checks that the destination is not the current station and
+			//that the destination is active (maxpax!=0)
+		while(destination.maxPax==0 || current.equals(destination)){
+			destination = stations.get((int)(Math.random() * stations.size()));
 		}
-		
-		// Find the station
-		int index = (int) ( forward ? Math.random()*(current_station+1) : Math.random()*(current_station-1));
-		Station s = l.getStations().get(index);
-		
-		return this.s.generatePassenger(s);
+		Passenger passenger = new Passenger(current, destination);
+		return passenger;
 	}
 	
 }

@@ -26,7 +26,7 @@ public class Station {
 	private PassengerRouter router;
 	public float maxPax;
 	public ArrayList<Passenger> waiting;
-	public PassengerGenerator g;
+	//public PassengerGenerator g;
 
 	public Station(float x, float y, PassengerRouter router, String name, float maxPax){
 		this.name = name;
@@ -36,7 +36,7 @@ public class Station {
 		this.trains = new ArrayList<Train>();
 		this.maxPax = maxPax;
 		this.waiting = new ArrayList<Passenger>();
-		this.g = new PassengerGenerator(this, this.getLines(), maxPax);
+		//this.g = new PassengerGenerator(this, this.getLines(), maxPax);
 	}
 	
 	public ArrayList<Train> getTrains(){
@@ -87,26 +87,21 @@ public class Station {
 			this.getTrains().add(t);
 			
 			// Add the waiting passengers
-			Iterator<Passenger> pIter = this.waiting.iterator();
-			while(pIter.hasNext()){
-				Passenger p = pIter.next();
-				try {
-					t.embark(p);
-					pIter.remove();
-				} catch (Exception e){
-					// Do nothing, already waiting
-					break;
+			if(maxPax!=0){
+				Iterator<Passenger> pIter = this.waiting.iterator();
+				while(pIter.hasNext()){
+					Passenger p = pIter.next();
+					try {
+						t.embark(p);
+						pIter.remove();
+					} catch (Exception e){
+						// Do nothing, already waiting
+						break;
+					}
 				}
-			}
-			
-			// Add the new passenger
-			Passenger[] ps = this.g.generatePassengers();
-			for(Passenger p: ps){
-				try {
-					t.embark(p);
-				} catch(Exception e){
-					this.waiting.add(p);
-				}
+				
+				// Add the new passenger
+				
 			}
 		}
 	}
