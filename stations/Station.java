@@ -2,10 +2,12 @@ package com.unimelb.swen30006.metromadness.stations;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.unimelb.swen30006.metromadness.passengers.Passenger;
+import com.unimelb.swen30006.metromadness.passengers.PassengerGenerator;
 import com.unimelb.swen30006.metromadness.routers.PassengerRouter;
 import com.unimelb.swen30006.metromadness.tracks.Line;
 import com.unimelb.swen30006.metromadness.trains.Train;
@@ -22,13 +24,19 @@ public class Station {
 	private ArrayList<Train> trains;
 	private static final float DEPARTURE_TIME = 2;
 	private PassengerRouter router;
+	public float maxPax;
+	public ArrayList<Passenger> waiting;
+	public PassengerGenerator g;
 
-	public Station(float x, float y, PassengerRouter router, String name){
+	public Station(float x, float y, PassengerRouter router, String name, float maxPax){
 		this.name = name;
 		this.router = router;
 		this.position = new Point2D.Float(x,y);
 		this.lines = new ArrayList<Line>();
 		this.trains = new ArrayList<Train>();
+		this.maxPax = maxPax;
+		this.waiting = new ArrayList<Passenger>();
+		this.g = new PassengerGenerator(this, this.getLines(), maxPax);
 	}
 	
 	public ArrayList<Train> getTrains(){
@@ -72,10 +80,34 @@ public class Station {
 	}
 	
 	public void enter(Train t) throws Exception {
-		if(trains.size() >= PLATFORMS){
+		if(getTrains().size() >= getPLATFORMS()){
 			throw new Exception();
 		} else {
-			this.trains.add(t);
+			// Add the train
+			this.getTrains().add(t);
+			
+			// Add the waiting passengers
+			Iterator<Passenger> pIter = this.waiting.iterator();
+			while(pIter.hasNext()){
+				Passenger p = pIter.next();
+				try {
+					t.embark(p);
+					pIter.remove();
+				} catch (Exception e){
+					// Do nothing, already waiting
+					break;
+				}
+			}
+			
+			// Add the new passenger
+			Passenger[] ps = this.g.generatePassengers();
+			for(Passenger p: ps){
+				try {
+					t.embark(p);
+				} catch(Exception e){
+					this.waiting.add(p);
+				}
+			}
 		}
 	}
 	
