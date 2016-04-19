@@ -33,7 +33,7 @@ public class Simulation {
 		// Create a list of trains
 		this.trains = new ArrayList<Train>();
 		this.trains.addAll(m.getTrains());
-		this.g = new PassengerGenerator(this.stations);
+		this.g = new PassengerGenerator(this.stations, this.trains);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class Simulation {
 			//the maxpac
 			if(s.waiting.size()<(int)(0.5*s.maxPax*Math.random())){
 			
-				Passenger[] ps = this.g.generatePassengers(s);
+				Passenger[] ps = this.g.generatePassengers(s, trains);
 				for(Passenger p: ps){
 					//While there is space in the station
 					while(s.waiting.size()<(s.maxPax*Math.random())){
@@ -81,4 +81,6 @@ public class Simulation {
 			s.render(renderer);
 		}
 	}
+	
+	
 }

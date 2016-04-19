@@ -124,8 +124,8 @@ public class Station {
 		return DEPARTURE_TIME;
 	}
 
-	public boolean shouldLeave(Passenger p) {
-		return this.router.shouldLeave(this, p);
+	public boolean shouldLeave(Passenger p, Line trainLine) {
+		return this.router.shouldLeave(this, p, this.lines, trainLine);
 	}
 
 	@Override

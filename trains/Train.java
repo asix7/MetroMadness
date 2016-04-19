@@ -68,6 +68,9 @@ public class Train {
 		return this.passengers;
 	}
 	
+	public Line getTrainLine(){
+		return this.trainLine;
+	}
 	
 	public boolean getForward(){
 		return this.forward;
@@ -208,7 +211,7 @@ public class Train {
 		Iterator<Passenger> iterator = this.passengers.iterator();
 		while(iterator.hasNext()){
 			Passenger p = iterator.next();
-			if(this.station.shouldLeave(p)){
+			if(this.station.shouldLeave(p, trainLine)){
 				disembarking.add(p);
 				iterator.remove();
 			}
