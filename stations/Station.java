@@ -24,19 +24,25 @@ public class Station {
 	private ArrayList<Train> trains;
 	private static final float DEPARTURE_TIME = 2;
 	private PassengerRouter router;
-	public float maxPax;
-	public ArrayList<Passenger> waiting;
-	//public PassengerGenerator g;
+	private int maxPax;
+	private ArrayList<Passenger> waiting;
+	
+	private boolean passangerEnter;
+	private boolean passangerLeave;
+	
+	
 
-	public Station(float x, float y, PassengerRouter router, String name, float maxPax){
+	public Station(float x, float y, PassengerRouter router, String name, int maxPax, boolean canEnter, boolean canLeave){
 		this.name = name;
 		this.router = router;
 		this.position = new Point2D.Float(x,y);
 		this.lines = new ArrayList<Line>();
 		this.trains = new ArrayList<Train>();
+		this.passangerEnter = canEnter;
+		this.passangerLeave = canLeave;
+		
 		this.maxPax = maxPax;
 		this.waiting = new ArrayList<Passenger>();
-		//this.g = new PassengerGenerator(this, this.getLines(), maxPax);
 	}
 	
 	public ArrayList<Train> getTrains(){
@@ -57,6 +63,29 @@ public class Station {
 	
 	public Point2D.Float getPosition(){
 		return this.position;
+	}
+	
+	public ArrayList<Passenger> getWaitingList(){
+		return this.waiting;
+	}
+	
+	public void addWaiting(Passenger p){
+		this.waiting.add(p);
+	}
+	
+	public int getMaxPax(){
+		return this.maxPax;
+	}
+	public boolean isActive(){
+		return (passangerEnter || passangerLeave);
+	}
+	
+	public boolean passangerCanEnter(){
+		return passangerEnter; 
+	}
+	
+	public boolean passangerCanLeave(){
+		return passangerLeave; 
 	}
 	
 	public void registerLine(Line l){

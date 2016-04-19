@@ -23,8 +23,9 @@ public class PassengerGenerator {
 	}
 	
 	public Passenger[] generatePassengers(Station current, ArrayList<Train> trains){
+		int maxPax = current.getMaxPax();
 		//If the station is inactive, maxPax = 0 and no passengers is created
-		int count = (int) (Math.random()*current.maxPax);
+		int count = (int) (Math.random()*maxPax);
 		Passenger[] passengers = new Passenger[count];
 		for(int i=0; i<count; i++){
 			passengers[i] = generatePassenger(current, trains);
@@ -51,7 +52,7 @@ public class PassengerGenerator {
 		//Checks that the destination is not the current station and
 			//that the destination is active (maxpax!=0)
 				//and that there is trains running to that stations
-		while(destination.maxPax==0 || current.equals(destination) || (!workingStations.contains(destination))){
+		while(destination.passangerCanLeave() || current.equals(destination) || (!workingStations.contains(destination))){
 			destination = stations.get((int)(Math.random() * stations.size()));
 		}
 		Passenger passenger = new Passenger(current, destination);

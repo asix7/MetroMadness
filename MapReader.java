@@ -108,7 +108,7 @@ public class MapReader {
 		
 		// Make the train
 		if(type.equals("BigPassenger")){
-			return new Train(l,s,dir, 80);
+			return new Train(l,s,dir, BIG_CAPACITY);
 		} else if (type.equals("SmallPassenger")){
 			return new Train(l,s,dir, SMALL_CAPACITY);
 		} else {
@@ -125,9 +125,15 @@ public class MapReader {
 		PassengerRouter r = createRouter(router);
 		if(type.equals("Active")){
 			int maxPax = e.getInt("max_passengers");
-			return new Station(x_loc, y_loc, r, name, maxPax);
+			return new Station(x_loc, y_loc, r, name, maxPax, true, true);
 		} else if (type.equals("Passive")){
-			return new Station(x_loc, y_loc, r, name, 0);
+			return new Station(x_loc, y_loc, r, name, 0,false, false);
+		} else if (type.equals("OnlyEnter")){
+			int maxPax = e.getInt("max_passengers");
+			return new Station(x_loc, y_loc, r, name, maxPax, true, false);
+		} else if (type.equals("OnlyEnter")){
+			int maxPax = e.getInt("max_passengers");
+			return new Station(x_loc, y_loc, r, name, maxPax, false, true);
 		}
 		
 		return null;

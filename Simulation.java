@@ -42,21 +42,20 @@ public class Simulation {
 		
 		for(Station s: this.stations){
 			//Create a random number of passengers less than the maxPax
-			System.out.println(s);
-			System.out.println(s.waiting.size());
-			System.out.println(s.maxPax);
+			int maxpax = s.getMaxPax();
+			ArrayList<Passenger> waiting = s.getWaitingList();
 			
 			//If the number of people waiting is less than the max capacity of the station
 			// multiplied by a random number and by 0.5, create passengers
 			//This gaves each station a reasonable random number of passengers that is less than
 			//the maxpac
-			if(s.waiting.size()<(int)(0.5*s.maxPax*Math.random())){
+			if(waiting.size()<(int)(0.5*maxpax *Math.random())){
 			
 				Passenger[] ps = this.g.generatePassengers(s, trains);
 				for(Passenger p: ps){
 					//While there is space in the station
-					while(s.waiting.size()<(s.maxPax*Math.random())){
-						s.waiting.add(p);
+					while(waiting.size()<(maxpax *Math.random())){
+						s.addWaiting(p);
 					}
 				}
 			}
